@@ -1,8 +1,3 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.IdentityModel.Tokens;
 using ShopManagementSystem.Application;
 using ShopManagementSystem.Dashboard;
 using ShopManagementSystem.Dashboard.Configuration;
@@ -13,7 +8,6 @@ using ShopManagementSystem.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-// Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.RegisterDataServices();
 builder.Services.RegisterApplicationServices();
@@ -51,12 +45,6 @@ app.UseAuthentication();
 
 app.Use(async (context, next) =>
 {
-    if (context.User.Identity?.IsAuthenticated == true)
-    {
-        // User is authenticated
-        // You can access the authenticated user's information through context.User
-    }
-
     await next.Invoke();
 });
 

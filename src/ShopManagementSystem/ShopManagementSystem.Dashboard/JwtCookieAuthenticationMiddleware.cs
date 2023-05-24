@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShopManagementSystem.Application.Dependencies;
-using ShopManagementSystem.Services.UserServices;
 
 namespace ShopManagementSystem.Dashboard
 {

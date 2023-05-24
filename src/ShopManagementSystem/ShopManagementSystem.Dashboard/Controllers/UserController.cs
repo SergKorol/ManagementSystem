@@ -8,7 +8,6 @@ using ShopManagementSystem.Services.UserServices;
 
 namespace ShopManagementSystem.Dashboard.Controllers;
 
-[AuthorizeAdministrator("Admin")]
 public class UserController : Controller
 {
 
@@ -21,6 +20,7 @@ public class UserController : Controller
         _logger = logger;
     }
     
+    [AuthorizeAdministrator("Admin")]
     public async Task<IActionResult> Index()
     {
         var command = new AddGetUsersCommand();
@@ -35,7 +35,7 @@ public class UserController : Controller
         views = users.Adapt<List<UserViewModel.UserView>>();
         return View(views);
     }
-
+    
     public async Task<IActionResult> Login(UserAuthInput userAuthInput)
     {
         var command = new AddUserLoginCredentials { Login = userAuthInput.Email, Password = userAuthInput.Password };
@@ -49,7 +49,7 @@ public class UserController : Controller
     {
         return  View("Login");
     }
-
+    [AuthorizeAdministrator("Admin")]
     public async Task<IActionResult> Register(UserAuthInput userAuthInput)
     {
         if (userAuthInput.Password != userAuthInput.ConfirmPassword)
@@ -62,33 +62,33 @@ public class UserController : Controller
         if (!result) return Redirect("RegisterView");
         return RedirectToAction("Index", "Home");
     }
-    
+    [AuthorizeAdministrator("Admin")]
     public IActionResult RegisterView()
     {
         return  View("Register");
     }
-    
+    [AuthorizeAdministrator("Admin")]
     public async Task<IActionResult> GetUserById(string id)
     {
         var user = await _mediator.Send(new AddGetUserByIdCommand { Id = id });
         var view = user.Adapt<UserViewModel.UserDetailView>();
         return View("UserDetail", view);
     }
-
+    [AuthorizeAdministrator("Admin")]
     public async Task<IActionResult> DeleteUser(string id)
     {
         var result = await _mediator.Send(new AddDeleteUserCommand {Id = id});
         if (!result) return RedirectToAction("Error", "Home");
         return RedirectToAction("Index");
     }
-    
+    [AuthorizeAdministrator("Admin")]
     public IActionResult GetShopId(string id, IEnumerable<string> employeeIds)
     {
         Constrains.ShopId = id;
         Constrains.ProductIds = employeeIds;
         return RedirectToAction("Index");
     }
-
+    [AuthorizeAdministrator("Admin")]
     public async Task<IActionResult> SetSelectedUsersToEmployeeInShop(IFormCollection form)
     {
         var userIds = form["selectedUsers"].ToList();
