@@ -4,7 +4,7 @@ using ShopManagementSystem.Application.ProductHandlers.Commands;
 
 namespace ShopManagementSystem.Application.ProductHandlers;
 
-public class DeleteProductHandler : IRequestHandler<AddDeleteProductCommand, bool>
+public sealed class DeleteProductHandler : IRequestHandler<AddDeleteProductCommand, bool>
 {
     private readonly IProductService _productService;
 

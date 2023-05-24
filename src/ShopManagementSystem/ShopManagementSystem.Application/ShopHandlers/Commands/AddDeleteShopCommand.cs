@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace ShopManagementSystem.Application.ShopHandler.Commands;
+namespace ShopManagementSystem.Application.ShopHandlers.Commands;
 
 public record AddDeleteShopCommand : IRequest<bool>
 {

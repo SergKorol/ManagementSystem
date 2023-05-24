@@ -2,11 +2,11 @@ using Mapster;
 using MediatR;
 using ShopManagementSystem.Application.Dependencies;
 using ShopManagementSystem.Application.DTOs;
-using ShopManagementSystem.Application.ShopHandler.Commands;
+using ShopManagementSystem.Application.ShopHandlers.Commands;
 
-namespace ShopManagementSystem.Application.ShopHandler;
+namespace ShopManagementSystem.Application.ShopHandlers;
 
-public class GetShopByIdHandler : IRequestHandler<AddGetShopByIdCommand, ShopDto>
+public sealed class GetShopByIdHandler : IRequestHandler<AddGetShopByIdCommand, ShopDto>
 {
     private readonly IShopService _shopService;
 

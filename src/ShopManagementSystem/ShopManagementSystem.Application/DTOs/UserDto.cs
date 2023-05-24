@@ -1,6 +1,6 @@
 namespace ShopManagementSystem.Application.DTOs;
 
-public class UserInfoDto
+public record UserDto
 {
     public string Id { get; set; }
     public string UserName { get; set; }

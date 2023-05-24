@@ -4,7 +4,7 @@ using ShopManagementSystem.Application.UserHandlers.Commands;
 
 namespace ShopManagementSystem.Application.UserHandlers;
 
-public class RegisterNewUserHandler : IRequestHandler<AddRegisterNewUserCommand, bool>
+public sealed class RegisterNewUserHandler : IRequestHandler<AddRegisterNewUserCommand, bool>
 {
     private readonly IUserService _userService;
     

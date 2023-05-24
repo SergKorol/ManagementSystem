@@ -3,21 +3,20 @@ using MediatR;
 using ShopManagementSystem.Application.Dependencies;
 using ShopManagementSystem.Application.DTOs;
 using ShopManagementSystem.Application.UserHandlers.Commands;
-using ShopManagementSystem.Data.Models;
 
 namespace ShopManagementSystem.Application.UserHandlers;
 
-public class GetUsersHandler : IRequestHandler<AddGetUsersCommand, List<UserInfoDto>>
+public sealed class GetUsersHandler : IRequestHandler<AddGetUsersCommand, List<UserDto>>
 {
     private readonly IUserService _userService;
     
     public GetUsersHandler(IUserService  userService)
         => _userService = userService;
     
-    public async Task<List<UserInfoDto>> Handle(AddGetUsersCommand request, CancellationToken cancellationToken)
+    public async Task<List<UserDto>> Handle(AddGetUsersCommand request, CancellationToken cancellationToken)
     {
         var users = await _userService.GetUsers();
-        var userInfoDto =  users.Adapt<List<UserInfoDto>>();
+        var userInfoDto =  users.Adapt<List<UserDto>>();
 
         return userInfoDto;
     }

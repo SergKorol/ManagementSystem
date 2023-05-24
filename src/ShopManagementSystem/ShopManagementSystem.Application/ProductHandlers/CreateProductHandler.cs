@@ -4,7 +4,7 @@ using ShopManagementSystem.Application.ProductHandlers.Commands;
 
 namespace ShopManagementSystem.Application.ProductHandlers;
 
-public class CreateProductHandler : IRequestHandler<AddCreateProductCommand, bool>
+public sealed class CreateProductHandler : IRequestHandler<AddCreateProductCommand, bool>
 {
     private readonly IProductService _productService;
 

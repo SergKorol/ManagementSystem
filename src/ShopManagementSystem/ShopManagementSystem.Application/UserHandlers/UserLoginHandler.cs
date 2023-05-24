@@ -4,7 +4,7 @@ using ShopManagementSystem.Application.UserHandlers.Commands;
 
 namespace ShopManagementSystem.Application.UserHandlers;
 
-public class UserLoginHandler : IRequestHandler<AddUserLoginCredentials, string>
+public sealed class UserLoginHandler : IRequestHandler<AddUserLoginCredentials, string>
 {
     private readonly IUserService _userService;
     

@@ -2,7 +2,6 @@ using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ShopManagementSystem.Application.ProductHandlers.Commands;
-using ShopManagementSystem.Application.ShopHandler.Commands;
 using ShopManagementSystem.Application.ShopHandlers.Commands;
 using ShopManagementSystem.Application.UserHandlers.Commands;
 using ShopManagementSystem.Dashboard.Models.ViewModels;

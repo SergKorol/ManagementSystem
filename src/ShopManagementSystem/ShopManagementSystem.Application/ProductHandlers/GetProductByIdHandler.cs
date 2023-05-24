@@ -6,7 +6,7 @@ using ShopManagementSystem.Application.ProductHandlers.Commands;
 
 namespace ShopManagementSystem.Application.ProductHandlers;
 
-public class GetProductByIdHandler : IRequestHandler<AddGetProductByIdCommand, ProductDto>
+public sealed class GetProductByIdHandler : IRequestHandler<AddGetProductByIdCommand, ProductDto>
 {
     private readonly IProductService _productService;
 

@@ -6,7 +6,7 @@ using ShopManagementSystem.Application.ProductHandlers.Commands;
 
 namespace ShopManagementSystem.Application.ProductHandlers;
 
-public class GetProductsHandler : IRequestHandler<AddGetProductsCommand, IEnumerable<ProductDto>>
+public sealed class GetProductsHandler : IRequestHandler<AddGetProductsCommand, IEnumerable<ProductDto>>
 {
     private readonly IProductService _productService;
 

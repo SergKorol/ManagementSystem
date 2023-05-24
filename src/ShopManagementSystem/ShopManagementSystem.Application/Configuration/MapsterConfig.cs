@@ -18,11 +18,6 @@ public static class MapsterConfig
         TypeAdapterConfig<Product, ProductDto>
             .NewConfig();
         
-        // TypeAdapterConfig<Employee, EmployeeDto>
-        //     .NewConfig()
-        //     .Map(dest => dest.EmployeeId)
-         
-        
         TypeAdapterConfig.GlobalSettings.Scan(Assembly.GetExecutingAssembly());
     }
 }

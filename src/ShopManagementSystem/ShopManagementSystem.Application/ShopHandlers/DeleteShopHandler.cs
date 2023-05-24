@@ -1,10 +1,10 @@
 using MediatR;
 using ShopManagementSystem.Application.Dependencies;
-using ShopManagementSystem.Application.ShopHandler.Commands;
+using ShopManagementSystem.Application.ShopHandlers.Commands;
 
-namespace ShopManagementSystem.Application.ShopHandler;
+namespace ShopManagementSystem.Application.ShopHandlers;
 
-public class DeleteShopHandler : IRequestHandler<AddDeleteShopCommand, bool>
+public sealed class DeleteShopHandler : IRequestHandler<AddDeleteShopCommand, bool>
 {
     private readonly IShopService _shopService;
 

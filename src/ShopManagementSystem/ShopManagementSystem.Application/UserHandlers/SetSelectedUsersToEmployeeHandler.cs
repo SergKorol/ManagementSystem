@@ -4,7 +4,7 @@ using ShopManagementSystem.Application.UserHandlers.Commands;
 
 namespace ShopManagementSystem.Application.UserHandlers;
 
-public class SetSelectedUsersToEmployeeHandler : IRequestHandler<AddSetSelectedUsersToEmployeeInShopCommand, bool>
+public sealed class SetSelectedUsersToEmployeeHandler : IRequestHandler<AddSetSelectedUsersToEmployeeInShopCommand, bool>
 {
     private readonly IUserService _userService;
     
