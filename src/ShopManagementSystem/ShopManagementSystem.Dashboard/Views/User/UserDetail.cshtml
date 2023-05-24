@@ -1,0 +1,17 @@
+@model ShopManagementSystem.Dashboard.Models.ViewModels.UserViewModel.UserDetailView
+
+@{
+    ViewData["Title"] = "User Detail Page";
+    Layout = "_Layout";
+}
+
+<div class="card" style="width: 18rem;">
+    <img src="https://www.icwukltd.co.uk/wp-content/uploads/2016/12/avatar-placeholder.png" class="card-img-top" alt="no image">
+    <div class="card-body">
+        <h5 class="card-title">@Model.UserName</h5>
+        <p class="card-text"><b>Email: </b>@Model.Email</p>
+        <p class="card-text"><b>Phone: </b>@Model.PhoneNumber</p>
+        <p class="card-text"><b>Role: </b>@Model.Role</p>
+        <a href="@Url.Action("Index", "User")" class="btn btn-primary">Go back</a>
+    </div>
+</div>

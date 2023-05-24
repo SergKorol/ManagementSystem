@@ -1,16 +1,12 @@
-version: "3.8"
-
+version: '3.4'
 services:
-   data:
-      container_name: sqlserver
-      image: mcr.microsoft.com/mssql/server:2019-latest
-      ports: 
-         - "1433:1433"
-      environment:
-         - ACCEPT_EULA=Y
-         - SA_PASSWORD=yourStrongPassword12!@
-      volumes: 
-         - sqldata:/var/opt/mssql 
-
-volumes:
-   sqldata:
+  webmvc:
+    container_name: shop-system
+    build:
+      context: .
+      dockerfile: src/ShopManagementSystem/ShopManagementSystem.Dashboard/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+    ports:
+      - "5005:80"

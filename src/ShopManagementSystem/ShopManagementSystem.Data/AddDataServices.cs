@@ -1,12 +1,10 @@
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using ShopManagementSystem.Data.Context;
 using ShopManagementSystem.Data.Models;
+using ShopManagementSystem.Data.Repository;
 using ShopManagementSystem.Data.Seeds;
 using ShopManagementSystem.Data.Seeds.Identity;
 
@@ -14,45 +12,51 @@ namespace ShopManagementSystem.Data;
 
 public static class AddDataServices
 {
-    public static IServiceCollection RegisterDataServices(this IServiceCollection serviceCollection)
+    public static IServiceCollection RegisterDataServices(this IServiceCollection services)
     {
         // var currentDirectory = Directory.GetCurrentDirectory();
+        // if (currentDirectory != "/app")
+        // {
+        //     
+        // }
         // string? parentDirectory = Path.GetDirectoryName(Path.GetDirectoryName(currentDirectory));
         // string path = $"{parentDirectory}/ShopManagementSystem/ShopManagementSystem.Data";
-        // var configuration = new ConfigurationBuilder()
-        //     .SetBasePath(path)
-        //     .AddJsonFile("appsettings.json")
-        //     .Build();
+        string path;
+        string currentDirectory = Directory.GetCurrentDirectory();
+        if (currentDirectory != "/app")
+        {
+            string? parentDirectory = Path.GetDirectoryName(Path.GetDirectoryName(currentDirectory));
+            path = $"{parentDirectory}/ShopManagementSystem/ShopManagementSystem.Data";
+        }
+        else
+        {
+            path = "/app/src/ShopManagementSystem/ShopManagementSystem.Data";
+        }
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(path)
+            .AddJsonFile("appsettings.json")
+            .Build();
+        services.AddDbContext<ApplicationDbContext>(
+            options =>
+                options.UseSqlite(
+                    $"DataSource={path}/shop.db;Cache=Shared",
+                    x => x.MigrationsAssembly("ShopManagementSystem.Data")));
         
+        services.AddIdentity<IdentityUser, IdentityRole>()
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
         
-        
-        
-        serviceCollection.AddScoped<DbInitializer>();
-        serviceCollection.AddScoped<IdentityDataSeeder>();
-        serviceCollection.AddScoped<UserManager<IdentityUser>>();
-        serviceCollection.AddScoped<RoleManager<IdentityRole>>();
-        // serviceCollection.AddScoped<IUnitOfWork, UnitOfWork>();
-        // serviceCollection.AddSingleton<IdentityDataSeeder>();
-        // serviceCollection.AddDatabaseDeveloperPageExceptionFilter();
+        services.AddScoped<DbInitializer>();
+        services.AddScoped<IdentityDataSeeder>();
+        services.AddScoped<UserManager<IdentityUser>>();
+        services.AddScoped<RoleManager<IdentityRole>>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IRepository<Shop>, Repository<Shop>>();
+        services.AddScoped<IRepository<Product>, Repository<Product>>();
+        services.AddScoped<IRepository<Employee>, Repository<Employee>>();
+        services.AddScoped<IRepository<ShopProduct>, Repository<ShopProduct>>();
+        services.AddDatabaseDeveloperPageExceptionFilter();
 
-        return serviceCollection;
+        return services;
     }
-
-    // public static IServiceCollection AddDatabase<TDbContext>(this IServiceCollection services)
-    //     where TDbContext : DbContext
-    // {
-    //     var configuration = new ConfigurationBuilder()
-    //         .SetBasePath(Directory.GetCurrentDirectory())
-    //         .AddJsonFile("appsettings.json")
-    //         .Build();
-    //     services
-    //         .AddScoped<DbContext, TDbContext>()
-    //         .AddDbContextPool<TDbContext>(options =>
-    //             options.UseSqlite(
-    //                 configuration.GetConnectionString("DefaultConnection")));
-    //
-    //     return services;
-    // }
-
-
 }

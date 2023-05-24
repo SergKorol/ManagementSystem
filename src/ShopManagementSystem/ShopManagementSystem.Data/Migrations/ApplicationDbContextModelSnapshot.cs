@@ -209,24 +209,9 @@ namespace ShopManagementSystem.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ProductShop", b =>
-                {
-                    b.Property<Guid>("ProductsId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("ShopsId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("ProductsId", "ShopsId");
-
-                    b.HasIndex("ShopsId");
-
-                    b.ToTable("ProductShop");
-                });
-
             modelBuilder.Entity("ShopManagementSystem.Data.Models.Employee", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("EmployeeId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
@@ -242,13 +227,13 @@ namespace ShopManagementSystem.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("ShopId")
+                    b.Property<Guid>("ShopId")
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.HasKey("EmployeeId");
 
                     b.HasIndex("ShopId");
 
@@ -257,7 +242,7 @@ namespace ShopManagementSystem.Data.Migrations
 
             modelBuilder.Entity("ShopManagementSystem.Data.Models.Product", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("ProductId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
@@ -265,14 +250,14 @@ namespace ShopManagementSystem.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.HasKey("ProductId");
 
                     b.ToTable("Products");
                 });
 
             modelBuilder.Entity("ShopManagementSystem.Data.Models.Shop", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("ShopId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
@@ -284,9 +269,24 @@ namespace ShopManagementSystem.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.HasKey("ShopId");
 
                     b.ToTable("Shops");
+                });
+
+            modelBuilder.Entity("ShopManagementSystem.Data.Models.ShopProduct", b =>
+                {
+                    b.Property<Guid>("ShopId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ShopId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ShopProducts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -340,31 +340,46 @@ namespace ShopManagementSystem.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ProductShop", b =>
-                {
-                    b.HasOne("ShopManagementSystem.Data.Models.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ProductsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ShopManagementSystem.Data.Models.Shop", null)
-                        .WithMany()
-                        .HasForeignKey("ShopsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ShopManagementSystem.Data.Models.Employee", b =>
                 {
-                    b.HasOne("ShopManagementSystem.Data.Models.Shop", null)
+                    b.HasOne("ShopManagementSystem.Data.Models.Shop", "Shop")
                         .WithMany("Employees")
-                        .HasForeignKey("ShopId");
+                        .HasForeignKey("ShopId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Shop");
+                });
+
+            modelBuilder.Entity("ShopManagementSystem.Data.Models.ShopProduct", b =>
+                {
+                    b.HasOne("ShopManagementSystem.Data.Models.Product", "Product")
+                        .WithMany("ShopProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ShopManagementSystem.Data.Models.Shop", "Shop")
+                        .WithMany("ShopProducts")
+                        .HasForeignKey("ShopId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Shop");
+                });
+
+            modelBuilder.Entity("ShopManagementSystem.Data.Models.Product", b =>
+                {
+                    b.Navigation("ShopProducts");
                 });
 
             modelBuilder.Entity("ShopManagementSystem.Data.Models.Shop", b =>
                 {
                     b.Navigation("Employees");
+
+                    b.Navigation("ShopProducts");
                 });
 #pragma warning restore 612, 618
         }

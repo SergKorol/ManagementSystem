@@ -1,0 +1,24 @@
+@model ShopManagementSystem.Dashboard.Models.ViewModels.ProductViewModel.ProductDetail
+
+@{
+    ViewData["Title"] = "User Detail Page";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3">
+            <div class="card" style="width: 18rem;">
+                <img src="https://th.bing.com/th/id/OIP.F00dCf4bXxX0J-qEEf4qIQHaD6?pid=ImgDet&rs=1" class="card-img-top" alt="no image">
+                <div class="card-body">
+                    <h5 class="card-title">@Model.Name</h5>
+                    <p class="card-text">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam maxime necessitatibus odio, optio quo recusandae sint totam. 
+                        Eos quas quibusdam ratione sequi vero? Autem dolor ex ipsum minima porro, tempora?
+                    </p>
+                    <a href="@Url.Action("Index", "Product")" class="btn btn-primary">Go back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

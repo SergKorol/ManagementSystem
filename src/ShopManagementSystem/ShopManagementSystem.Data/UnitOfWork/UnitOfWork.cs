@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using ShopManagementSystem.Data.Context;
 using ShopManagementSystem.Data.Models;
 using ShopManagementSystem.Data.Repository;
@@ -13,7 +14,7 @@ public sealed class UnitOfWork : IUnitOfWork
     public IRepository<Shop> ShopRepository { get; private set; }
     public IRepository<Product> ProductRepository { get; private set; }
     public IRepository<Employee> EmployeeRepository { get; private set; }
-
+    public IRepository<ShopProduct> ShopProductRepository { get; private set; }
     public UnitOfWork(ApplicationDbContext context)
     {
         _context = context;
@@ -21,6 +22,7 @@ public sealed class UnitOfWork : IUnitOfWork
         ShopRepository = new Repository<Shop>(_context);
         ProductRepository = new Repository<Product>(_context);
         EmployeeRepository = new Repository<Employee>(_context);
+        ShopProductRepository = new Repository<ShopProduct>(context);
     }
   
     
@@ -28,6 +30,11 @@ public sealed class UnitOfWork : IUnitOfWork
     public void Save()
     {
         _context.SaveChanges();
+    }
+
+    public EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class
+    {
+        return _context.Entry(entity);
     }
 
     private void Dispose(bool disposing)

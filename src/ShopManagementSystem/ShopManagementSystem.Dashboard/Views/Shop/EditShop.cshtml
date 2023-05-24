@@ -1,0 +1,31 @@
+@model ShopManagementSystem.Dashboard.Models.ViewModels.ShopViewModel.ShopDetail
+
+@{
+    ViewData["Title"] = "Edit shop";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-lg-4 offset-lg-4">
+        @using (Html.BeginForm("EditShop", "Shop", FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            <div class="form-label">
+                <div>
+                    @Html.HiddenFor(m => m.ShopId, new { @class = "form-control", id="shopId", value = @Model.ShopId })
+                </div>
+                <div>
+                    @Html.LabelFor(m => m.Title, new { @class = "form-label" })
+                    @Html.TextBoxFor(m => m.Title, new { @class = "form-control", value = @Model.Title })
+                </div>
+                <div>
+                    @Html.LabelFor(m => m.Phone, new { @class = "form-label" })
+                    @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", @Model.Phone })
+                </div>
+                <div class="btn-group" role="group" aria-label="Shop">
+                    <button type="submit" class="btn btn-success">Edit</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+

@@ -9,5 +9,6 @@ public class SeedService
         EmployeeDataSeeder.SeedEmployeeData(context);
         ProductDataSeeder.SeedProductData(context);
         ShopDataSeeder.SeedShopData(context);
+        ShopProductDataSeeder.SeedShopProductData(context);
     }
 }

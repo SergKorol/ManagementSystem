@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using ShopManagementSystem.Data.Models;
 using ShopManagementSystem.Data.Repository;
 
@@ -9,6 +10,8 @@ public interface IUnitOfWork : IDisposable
     IRepository<Shop> ShopRepository { get; }
     IRepository<Product> ProductRepository { get; }
     IRepository<Employee> EmployeeRepository { get; }
+    IRepository<ShopProduct> ShopProductRepository { get; }
+    EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
 
     void Save();
 }

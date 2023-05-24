@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using ShopManagementSystem.Data.Context;
+using ShopManagementSystem.Data.Models;
 
 namespace ShopManagementSystem.Data.Repository;
 
-public class Repository<T> : IRepository<T> where T : class
+public class Repository<T> : IRepository<T> where T : class, new()
 {
     private readonly ApplicationDbContext _context;
     private readonly DbSet<T> _dbSet;
@@ -14,19 +15,30 @@ public class Repository<T> : IRepository<T> where T : class
         _dbSet = _context.Set<T>();
     }
 
-    public IEnumerable<T> GetAll()
+    public async Task<IEnumerable<T>> GetAll()
     {
-        return _dbSet.ToList();
+        return await _dbSet.ToListAsync();
     }
 
-    public T GetById(int id)
+    public async Task<T> GetById(Guid id)
     {
-        return _dbSet.Find(id);
+        return await _dbSet.FindAsync(id) ?? new T();
     }
 
-    public void Add(T entity)
+    public async Task<IEnumerable<T>> GetByListId(List<Guid> ids, string property)
     {
-        _dbSet.Add(entity);
+        return _context.Set<T>().ToList().Where(item => ids.Contains(GetIdFromItem<T>(item, property)));
+    }
+
+    private Guid GetIdFromItem<T>(T item, string property) where T : class
+    {
+        var idProperty = typeof(T).GetProperty(property);
+        return (Guid)idProperty.GetValue(item);
+    }
+    
+    public async Task Add(T entity)
+    {
+        await _dbSet.AddAsync(entity);
     }
 
     public void Update(T entity)

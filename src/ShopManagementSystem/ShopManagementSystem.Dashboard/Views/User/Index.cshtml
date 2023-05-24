@@ -1,0 +1,71 @@
+@model List<ShopManagementSystem.Dashboard.Models.ViewModels.UserViewModel.UserView>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-4">
+            <h4>Users</h4>
+            @using (Html.BeginForm("SetSelectedUsersToEmployeeInShop", "User", FormMethod.Post, new { @class = "form-horizontal" }))
+            {
+                <div class="form-label">
+                    @if (!string.IsNullOrEmpty(Constrains.ShopId))
+                    {
+                        <div class="mb-3">
+                            <input type="text" class="form-control" name="firstName" placeholder="Enter First Name">
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" name="lastName" placeholder="Enter Last Name">
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" name="post" placeholder="Enter Post">
+                        </div>
+                    }
+                    
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var user in Model)
+                        {
+                            <tr>
+                                <th scope="row">
+                                    <div class="form-check">
+                                        @if (!string.IsNullOrEmpty(Constrains.ShopId))
+                                        {
+                                            @* <input class="form-check-input" type="checkbox" name="selectedUsers" value="@user.Id"/> *@
+                                            <input class="form-check-input" type="radio" name="selectedUsers" value="@user.Id">
+                                        }
+                                        <a href="@Url.Action("GetUserById", "User", new { id = user.Id })">@user.UserName</a>
+                                    </div>
+                                </th>
+                                <td>@user.Email</td>
+                                <td>
+                                    <a href="@Url.Action("DeleteUser", "User", new { id = user.Id })">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                        @if (!string.IsNullOrEmpty(Constrains.ShopId))
+                        {
+                            <div class="text-center" style="text-align: center">
+                                <div class="btn-group" role="group" aria-label="Shop">
+                                    <button type="submit" class="btn btn-primary">Set Employees</button>
+                                </div>
+                            </div>
+                        }
+
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>

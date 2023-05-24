@@ -1,6 +1,64 @@
+@using ShopManagementSystem.Dashboard.Controllers
+@model IEnumerable<ShopManagementSystem.Dashboard.Models.ViewModels.ProductViewModel.ProductView>
+
 @{
     ViewBag.Title = "title";
     Layout = "_Layout";
 }
 
-<h2>Products</h2>
+<div class="container-fluid text-center">
+    <div class="row row justify-content-center">
+        <div class="col-4">
+            <h4 style="text-align: center">Products</h4>
+            <div class="text-center" style="text-align: center">
+                <div class="btn-group" role="group" aria-label="Shop">
+                    <a href="@Url.Action("CreateProductView", "Product")" class="btn btn-primary">
+                        Create
+                    </a>
+                </div>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                @using (Html.BeginForm("SetSelectedProductsToShop", "Product", FormMethod.Post, new { @class = "form-horizontal" }))
+                {
+                    <div class="form-label">
+                        @foreach (var product in Model)
+                        {
+                            <tr>
+                                <th scope="row">
+                                    <div class="form-check">
+                                        @if (!string.IsNullOrEmpty(Constrains.ShopId))
+                                        {
+                                            <input class="form-check-input" type="checkbox" name="selectedProducts" value="@product.ProductId.ToString()"/>
+                                        }
+                                        <a href="@Url.Action("GetProductById", "Product", new { id = product.ProductId })">@product.Name</a>
+                                    </div>
+                                </th>
+                                <td>
+                                    <a href="@Url.Action("EditProductView", "Product", new { id = product.ProductId })">Edit</a>
+                                    <br/>
+                                    <a href="@Url.Action("DeleteProduct", "Product", new { id = product.ProductId })">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                        @if (!string.IsNullOrEmpty(Constrains.ShopId))
+                        {
+                            <div class="text-center" style="text-align: center">
+                                <div class="btn-group" role="group" aria-label="Shop">
+                                    <button type="submit" class="btn btn-primary">Set Products</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -21,7 +21,6 @@ public static class DbInitializerExtension
         {
             
             var context = services.GetRequiredService<ApplicationDbContext>();
-            var t = context.Users.ToList();
             var seeder = scope.ServiceProvider.GetRequiredService<IdentityDataSeeder>();
             var logger = scope.ServiceProvider.GetRequiredService<ILogger<DbInitializer>>();
             DbInitializer.Initialize(context, seeder, logger);

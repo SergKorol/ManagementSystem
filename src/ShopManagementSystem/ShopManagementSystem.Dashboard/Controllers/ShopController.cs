@@ -1,8 +1,17 @@
+using Mapster;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ShopManagementSystem.Application.ProductHandlers.Commands;
+using ShopManagementSystem.Application.ShopHandler.Commands;
+using ShopManagementSystem.Application.ShopHandlers.Commands;
+using ShopManagementSystem.Application.UserHandlers.Commands;
+using ShopManagementSystem.Dashboard.Models.ViewModels;
+using ShopManagementSystem.Services.UserServices;
 
 namespace ShopManagementSystem.Dashboard.Controllers;
 
+[AuthorizeAdministrator("Admin")]
 public class ShopController : Controller
 {
     
@@ -13,59 +22,95 @@ public class ShopController : Controller
         _mediator = mediator;
     }
     
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        var command = new AddGetShopsCommand();
+        var result = await _mediator.Send(command);
+        var views = result.Adapt<IEnumerable<ShopViewModel.ShopView>>();
+        return View(views);
     }
 
-    public IActionResult CreateShop()
+    public async Task<IActionResult> CreateShop(string title, string phone)
     {
-        _mediator.Send(null);
-        return null;
+        var command = new AddCreateShopCommand { Title = title, Phone = phone};
+        var result = await _mediator.Send(command);
+        return !result ? RedirectToAction("Error", "Home") : RedirectToAction("Index");
     }
 
-    public IActionResult GetShopById()
+    public IActionResult CreateShopView()
     {
-        _mediator.Send(null);
-        return null;
+            return View("CreateShop");
     }
 
-    public IActionResult UpdateShop()
+    public async Task<IActionResult> GetShopById(string id)
     {
-        _mediator.Send(null);
-        return null;
+        var command = new AddGetShopByIdCommand { Id = id };
+        var shop = await _mediator.Send(command);
+        var view = shop.Adapt<ShopViewModel.ShopDetail>();
+        if (shop is null)
+        {
+            return RedirectToAction("Error", "Home");
+        }
+        return  View("ShopDetail", view);
+    }
+    
+
+    public async Task<IActionResult> EditShop(Guid shopId, string title, string phone)
+    {
+        var command = new AddEditShopCommand { Id = shopId, Title = title, Phone = phone};
+        var result = await _mediator.Send(command);
+        return !result ? RedirectToAction("Error", "Home") : RedirectToAction("Index");
+    }
+    
+    public async Task<IActionResult> EditShopView(string id)
+    {
+        var command = new AddGetShopByIdCommand { Id = id };
+        var shop = await _mediator.Send(command);
+        var view = shop.Adapt<ShopViewModel.ShopDetail>();
+        if (shop is null)
+        {
+            return RedirectToAction("Error", "Home");
+        }
+        return  View("EditShop", view);
     }
 
-    public IActionResult DeleteShop()
+    public async Task<IActionResult> DeleteShop(Guid id)
     {
-        _mediator.Send(null);
-        return null;
+        var command = new AddDeleteShopCommand { Id = id };
+        var result = await _mediator.Send(command);
+        if (!result) return RedirectToAction("Error", "Home");
+        return RedirectToAction("Index");
     }
 
-    public IActionResult SetEmployee()
+    public IActionResult SetProduct(string id, IEnumerable<string> productIds)
     {
-        _mediator.Send(null);
-        return null;
+        return RedirectToAction("GetShopId", "Product", new { id, productIds });
+    }
+    
+    public IActionResult SetEmployee(string id, IEnumerable<string> employeeIds)
+    {
+        return RedirectToAction("GetShopId", "User", new { id, employeeIds });
+    }
+    
+    
+    public IActionResult DeleteProduct(string id)
+    {
+        return RedirectToAction("GetShopId", "Product", new { id });
+    }
+
+    public async Task<IActionResult> DeleteProductFromShop(Guid shopId, Guid productId)
+    {
+        var command = new AddDeleteProductFromShop { ShopId = shopId, ProductId = productId };
+        var result = await _mediator.Send(command);
+        return !result ? RedirectToAction("Error", "Home") : RedirectToAction("Index");
     }
 
 
-    public IActionResult SetProduct()
+    public async Task<IActionResult> DeleteEmployeeFromShop(Guid shopId, Guid employeeId)
     {
-        _mediator.Send(null);
-        return null;
-    }
-
-
-    public IActionResult DeleteEmployeeFromShop()
-    {
-        _mediator.Send(null);
-        return null;
-    }
-
-    public IActionResult DeleteProductFromShop()
-    {
-        _mediator.Send(null);
-        return null;
+        var command = new AddDeleteEmployeeFromShopCommand { ShopId = shopId, EmployeeId = employeeId };
+        var result = await _mediator.Send(command);
+        return !result ? RedirectToAction("Error", "Home") : RedirectToAction("Index");
     }
 
 }

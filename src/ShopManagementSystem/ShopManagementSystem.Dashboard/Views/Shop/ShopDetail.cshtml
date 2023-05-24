@@ -1,0 +1,85 @@
+@model ShopManagementSystem.Dashboard.Models.ViewModels.ShopViewModel.ShopDetail
+
+@{
+    ViewData["Title"] = "User Detail Page";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3">
+            <div class="card" style="width: 18rem;">
+                <img src="https://th.bing.com/th/id/OIP.F00dCf4bXxX0J-qEEf4qIQHaD6?pid=ImgDet&rs=1" class="card-img-top" alt="no image">
+                <div class="card-body">
+                    <h5 class="card-title">@Model.Title</h5>
+                    <p class="card-text">
+                        <b>Phone: </b>@Model.Phone
+                    </p>
+                    <a href="@Url.Action("Index", "Shop")" class="btn btn-primary">Go back</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <h4 style="text-align: center">Products</h4>
+            <div class="text-center" style="text-align: center">
+                <div class="btn-group">
+                    <a href="@Url.Action("SetProduct", "Shop", new { Id = @Model.ShopId, productIds = @Model.Products.Select(x => x.ProductId) })" class="btn btn-primary">Add Product</a>
+                </div>
+            </div>
+            
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var product in Model.Products)
+                {
+                    <tr>
+                        <th scope="row">
+                            <a href="@Url.Action("GetProductById", "Product", new { id = product.ProductId })">@product.Name</a>
+                        </th>
+                        <td>
+                            <a href="@Url.Action("DeleteProductFromShop", "Shop", new { shopId = Model.ShopId ,productId = product.ProductId })">Delete</a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-3">
+            <h4 style="text-align: center">Employees</h4>
+            <div class="text-center" style="text-align: center">
+                <div class="btn-group">
+                    <a href="@Url.Action("SetEmployee", "Shop", new { Id = @Model.ShopId })" class="btn btn-primary">Add Employee</a>
+                </div>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Full Name</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var employee in Model.Employees)
+                {
+                    <tr>
+                        <th scope="row">
+                            <a href="">@employee.FirstName @employee.LastName</a>
+                        </th>
+                        <td>
+                            @employee.Post
+                        </td>
+                        <td>
+                            <a href="@Url.Action("DeleteEmployeeFromShop", "Shop", new { shopId = Model.ShopId , employeeId = employee.EmployeeId })">Delete</a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
