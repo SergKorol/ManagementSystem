@@ -16,33 +16,8 @@ public static class AddServices
 {
     public static IServiceCollection RegisterServices(this IServiceCollection services, IConfiguration config)
     {
-        var section = config.GetSection(nameof(ApplicationSettings));
-        services.Configure<ApplicationSettings>(section);
-        var secret = section.GetValue<string>(nameof(ApplicationSettings.Secret));
-        
-        var key = Encoding.ASCII.GetBytes(secret);
-        
-        services.AddAuthentication(authentication =>
-            {
-                authentication.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                authentication.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                authentication.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(bearer =>
-            {
-                bearer.RequireHttpsMetadata = false;
-                bearer.SaveToken = true;
-                bearer.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidIssuer = config["Jwt:Issuer"],
-                    ValidAudience = config["Jwt:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = false,
-                    ValidateIssuerSigningKey = true
-                };
-            }).AddCookie();
+
+        services.UseJwtAuthenticationConfig(config);
         services.AddAuthentication();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IShopService, ShopService>();

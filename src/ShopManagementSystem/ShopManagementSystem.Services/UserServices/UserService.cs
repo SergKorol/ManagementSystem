@@ -2,14 +2,13 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ShopManagementSystem.Application.Dependencies;
 using ShopManagementSystem.Data.Models;
 
 namespace ShopManagementSystem.Services.UserServices;
 
-public class UserService : IUserService
+public sealed class UserService : IUserService
 {
     private readonly UserManager<IdentityUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
@@ -126,7 +125,6 @@ public class UserService : IUserService
         return users;
     }
 
-
     public async Task<User> GetUserById(string userId)
     {
         var roles = _roleManager.Roles.Select(n => n.Name).ToList();
@@ -167,8 +165,6 @@ public class UserService : IUserService
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var jwtToken = tokenHandler.ReadJwtToken(token);
-        
-        
         var loginClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "unique_name");
         if (loginClaim != null)
         {
@@ -185,54 +181,69 @@ public class UserService : IUserService
 
     public async Task<bool> SetSelectedUsersToEmployeeInShop(IEnumerable<string> selectedUserIds, string shopId, string firstName, string lastName, string post)
     {
-        var users = (await _userManager.GetUsersInRoleAsync("User")).Where(x => selectedUserIds.Contains(x.Id));
-        
-        var shop = await  _shopService.GetShopById(shopId);
-        foreach (var user in users)
+        try
         {
-            var currentRole = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
-            await _userManager.RemoveFromRoleAsync(user, currentRole);
-            await _userManager.AddToRoleAsync(user, "Employee");
-        }
-
-        var employees = (await _userManager.GetUsersInRoleAsync("Employee")).Where(x => selectedUserIds.Contains(x.Id))
-            .Select(x => new Employee
+            var users = (await _userManager.GetUsersInRoleAsync("User")).Where(x => selectedUserIds.Contains(x.Id));
+        
+            var shop = await  _shopService.GetShopById(shopId);
+            foreach (var user in users)
             {
-                FirstName = firstName,
-                LastName = lastName,
-                Post = post,
-                UserId = Guid.Parse(x.Id)
-            });
-        foreach (var employee in employees)
-        {
-            shop.Employees.Add(employee);
-        }
+                var currentRole = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+                await _userManager.RemoveFromRoleAsync(user, currentRole);
+                await _userManager.AddToRoleAsync(user, "Employee");
+            }
 
-        await _shopService.UpdateShop(shop);
+            var employees = (await _userManager.GetUsersInRoleAsync("Employee")).Where(x => selectedUserIds.Contains(x.Id))
+                .Select(x => new Employee
+                {
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Post = post,
+                    UserId = Guid.Parse(x.Id)
+                });
+            foreach (var employee in employees)
+            {
+                shop.Employees.Add(employee);
+            }
+            await _shopService.UpdateShop(shop);
         
-        return true;
+            return true;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+            return false;
+        }
     }
 
     public async Task<bool> DeleteEmployeeFromShop(Guid employeeId, Guid shopId)
     {
-        var shop = await  _shopService.GetShopById(shopId.ToString());
-        var employee = shop.Employees.FirstOrDefault(x => x.EmployeeId == employeeId);
-        if (employee != null)
+        try
         {
-            shop.Employees.Remove(employee);
-        }
+            var shop = await  _shopService.GetShopById(shopId.ToString());
+            var employee = shop.Employees.FirstOrDefault(x => x.EmployeeId == employeeId);
+            if (employee != null)
+            {
+                shop.Employees.Remove(employee);
+            }
 
-        var user = (await _userManager.GetUsersInRoleAsync("Employee")).FirstOrDefault(x =>
-            Guid.Parse(x.Id) == employee.UserId);
-        if(user != null)
-        {
-            var currentRole = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
-            await _userManager.RemoveFromRoleAsync(user, currentRole);
-            await _userManager.AddToRoleAsync(user, "User");
-        }
+            var user = (await _userManager.GetUsersInRoleAsync("Employee")).FirstOrDefault(x =>
+                Guid.Parse(x.Id) == employee.UserId);
+            if(user != null)
+            {
+                var currentRole = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+                await _userManager.RemoveFromRoleAsync(user, currentRole);
+                await _userManager.AddToRoleAsync(user, "User");
+            }
         
-        await _shopService.UpdateShop(shop);
+            await _shopService.UpdateShop(shop);
 
-        return true;
+            return true;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+            return false;
+        }
     }
 }

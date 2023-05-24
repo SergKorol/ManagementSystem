@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using ShopManagementSystem.Data.Models;
 
 namespace ShopManagementSystem.Application.Dependencies;

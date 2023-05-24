@@ -1,14 +1,12 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Logging;
 using ShopManagementSystem.Application.Dependencies;
 using ShopManagementSystem.Data;
-using ShopManagementSystem.Data.Context;
 using ShopManagementSystem.Data.Models;
 
 namespace ShopManagementSystem.Services.ShopServices;
 
-public class ShopService : IShopService
+public sealed class ShopService : IShopService
 {
     private readonly IUnitOfWork _unitOfWork;
     private ILogger<ShopService> _logger;
@@ -78,16 +76,31 @@ public class ShopService : IShopService
 
     public async Task<bool> DeleteShop(Guid id)
     {
-        var shop = await _unitOfWork.ShopRepository.GetById(id);
-        if (shop == null) return false;
-        _unitOfWork.ShopRepository.Delete(shop);
-        _unitOfWork.Save();
-        return true;
+        try
+        {
+            var shop = await _unitOfWork.ShopRepository.GetById(id);
+            if (shop == null) return false;
+            _unitOfWork.ShopRepository.Delete(shop);
+            _unitOfWork.Save();
+            return true;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+            return false;
+        }
     }
 
     public async Task UpdateShop(Shop shop)
     {
-        _unitOfWork.ShopRepository.Update(shop);
-        _unitOfWork.Save();
+        try
+        {
+            _unitOfWork.ShopRepository.Update(shop);
+            _unitOfWork.Save();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+        }
     }
 }
