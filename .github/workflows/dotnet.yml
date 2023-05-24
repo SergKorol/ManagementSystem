@@ -22,12 +22,12 @@ jobs:
         dotnet-version: 6.0.x
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore src/ShopManagementSystem
 
     - name: Build
-      run: |
-        cd src/ShopManagementSystem
-        dotnet build --no-restore
+      working-directory: src/ShopManagementSystem
+      run: dotnet build --no-restore
     
     - name: Test
+      working-directory: src/ShopManagementSystem
       run: dotnet test --no-build --verbosity normal
