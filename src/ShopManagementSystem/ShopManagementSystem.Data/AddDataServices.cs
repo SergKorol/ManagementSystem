@@ -3,8 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ShopManagementSystem.Data.Context;
-using ShopManagementSystem.Data.Models;
-using ShopManagementSystem.Data.Repository;
 using ShopManagementSystem.Data.Seeds;
 using ShopManagementSystem.Data.Seeds.Identity;
 
@@ -14,13 +12,6 @@ public static class AddDataServices
 {
     public static IServiceCollection RegisterDataServices(this IServiceCollection services)
     {
-        // var currentDirectory = Directory.GetCurrentDirectory();
-        // if (currentDirectory != "/app")
-        // {
-        //     
-        // }
-        // string? parentDirectory = Path.GetDirectoryName(Path.GetDirectoryName(currentDirectory));
-        // string path = $"{parentDirectory}/ShopManagementSystem/ShopManagementSystem.Data";
         string path;
         string currentDirectory = Directory.GetCurrentDirectory();
         if (currentDirectory != "/app")
@@ -50,12 +41,8 @@ public static class AddDataServices
         services.AddScoped<IdentityDataSeeder>();
         services.AddScoped<UserManager<IdentityUser>>();
         services.AddScoped<RoleManager<IdentityRole>>();
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddScoped<IRepository<Shop>, Repository<Shop>>();
-        services.AddScoped<IRepository<Product>, Repository<Product>>();
-        services.AddScoped<IRepository<Employee>, Repository<Employee>>();
-        services.AddScoped<IRepository<ShopProduct>, Repository<ShopProduct>>();
         services.AddDatabaseDeveloperPageExceptionFilter();
+        services.RegisterRepositories();
 
         return services;
     }

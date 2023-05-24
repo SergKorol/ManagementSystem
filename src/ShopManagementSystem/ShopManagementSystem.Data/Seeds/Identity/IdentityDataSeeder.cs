@@ -3,7 +3,7 @@ using ShopManagementSystem.Data.Models;
 
 namespace ShopManagementSystem.Data.Seeds.Identity;
 
-public class IdentityDataSeeder
+public sealed class IdentityDataSeeder
 {
 
     private readonly UserManager<IdentityUser> _userManager;

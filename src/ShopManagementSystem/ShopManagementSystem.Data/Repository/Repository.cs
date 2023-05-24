@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using ShopManagementSystem.Data.Context;
-using ShopManagementSystem.Data.Models;
 
 namespace ShopManagementSystem.Data.Repository;
 

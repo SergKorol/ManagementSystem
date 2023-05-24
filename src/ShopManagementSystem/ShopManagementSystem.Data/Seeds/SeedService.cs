@@ -2,7 +2,7 @@ using ShopManagementSystem.Data.Context;
 
 namespace ShopManagementSystem.Data.Seeds;
 
-public class SeedService
+public sealed class SeedService
 {
     public static void Seed(ApplicationDbContext context)
     {

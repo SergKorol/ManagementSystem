@@ -1,13 +1,11 @@
 using System.Reflection;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using ShopManagementSystem.Data.Models;
 
 namespace ShopManagementSystem.Data.Context;
 
-public class ApplicationDbContext : IdentityDbContext
+public sealed class ApplicationDbContext : IdentityDbContext
 {
 
     public DbSet<Shop> Shops { get; set; }
@@ -15,9 +13,7 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<Employee> Employees { get; set; }
     public DbSet<ShopProduct> ShopProducts { get; set; }
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : base(options)
-    {
-    }
+        : base(options) { }
     
     protected override void OnModelCreating(ModelBuilder builder)
     {

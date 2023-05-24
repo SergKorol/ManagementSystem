@@ -24,8 +24,6 @@ public sealed class UnitOfWork : IUnitOfWork
         EmployeeRepository = new Repository<Employee>(_context);
         ShopProductRepository = new Repository<ShopProduct>(context);
     }
-  
-    
     
     public void Save()
     {
