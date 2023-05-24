@@ -5,20 +5,25 @@
     Layout = "_Layout";
 }
 
-<div class="row">
-    <div class="col-lg-4 offset-lg-4">
-        @using (Html.BeginForm("CreateProduct", "Product", FormMethod.Post, new { @class = "form-horizontal" }))
-        {
-            <div class="form-label">
-                <div>
-                    @Html.LabelFor(m => m.Name, new { @class = "form-label" })
-                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+<div class="container-fluid text-center">
+    <div class="row justify-content-center">
+        <div class="col-4">
+            @using (Html.BeginForm("CreateProduct", "Product", FormMethod.Post, new { @class = "form-horizontal" }))
+            {
+                <div class="form-label">
+                    <div>
+                        @Html.LabelFor(m => m.Name, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                    </div>
+                    <<div class="text-center" style="text-align: center">
+                        <div class="btn-group" role="group" aria-label="create product">
+                            <button type="submit" class="btn btn-primary">Create</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="btn-group" role="group" aria-label="Product">
-                    <button type="submit" class="btn btn-success">Create</button>
-                </div>
-            </div>
-        }
+            }
+        </div>
     </div>
 </div>
+
 

@@ -1,6 +1,5 @@
 using Mapster;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShopManagementSystem.Application.ProductHandlers.Commands;
 using ShopManagementSystem.Application.ShopHandler.Commands;
@@ -112,5 +111,4 @@ public class ShopController : Controller
         var result = await _mediator.Send(command);
         return !result ? RedirectToAction("Error", "Home") : RedirectToAction("Index");
     }
-
 }

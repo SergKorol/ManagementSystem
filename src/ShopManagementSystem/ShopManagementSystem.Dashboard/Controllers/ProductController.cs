@@ -94,9 +94,3 @@ public class ProductController : Controller
         return RedirectToAction("Index");
     }
 }
-
-// public static class Relation
-// {
-//         public static string ShopId { get; set; }
-//         public static IEnumerable<string> ProductIds { get; set; }
-// }
