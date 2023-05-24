@@ -4,24 +4,27 @@
     ViewData["Title"] = "Create shop";
     Layout = "_Layout";
 }
-
-<div class="row">
-    <div class="col-lg-4 offset-lg-4">
-        @using (Html.BeginForm("CreateShop", "Shop", FormMethod.Post, new { @class = "form-horizontal" }))
-        {
-            <div class="form-label">
-                <div>
-                    @Html.LabelFor(m => m.Title, new { @class = "form-label" })
-                    @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+<div class="container-fluid text-center">
+    <div class="row justify-content-center">
+        <div class="col-4">
+            @using (Html.BeginForm("CreateShop", "Shop", FormMethod.Post, new { @class = "form-horizontal" }))
+            {
+                <div class="form-label">
+                    <div>
+                        @Html.LabelFor(m => m.Title, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+                    </div>
+                    <div>
+                        @Html.LabelFor(m => m.Phone, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+                    </div>
+                    <div class="text-center" style="text-align: center">
+                        <div class="btn-group" role="group" aria-label="create shop">
+                            <button type="submit" class="btn btn-primary">Create</button>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    @Html.LabelFor(m => m.Phone, new { @class = "form-label" })
-                    @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
-                </div>
-                <div class="btn-group" role="group" aria-label="Shop">
-                    <button type="submit" class="btn btn-success">Create</button>
-                </div>
-            </div>
-        }
+            }
+        </div>
     </div>
 </div>
