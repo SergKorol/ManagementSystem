@@ -43,9 +43,4 @@ app.MapControllerRoute(
 
 app.UseAuthentication();
 
-app.Use(async (context, next) =>
-{
-    await next.Invoke();
-});
-
 app.Run();

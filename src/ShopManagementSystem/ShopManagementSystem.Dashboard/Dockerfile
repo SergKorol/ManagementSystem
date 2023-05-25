@@ -17,18 +17,6 @@ COPY . .
 WORKDIR "src/ShopManagementSystem/ShopManagementSystem.Dashboard"
 RUN dotnet build "ShopManagementSystem.Dashboard.csproj" -c Release -o /app/build
 
-FROM build AS application
-WORKDIR "src/ShopManagementSystem/ShopManagementSystem.Application"
-
-FROM build AS data
-WORKDIR "src/ShopManagementSystem/ShopManagementSystem.Data"
-
-FROM build AS services
-WORKDIR "src/ShopManagementSystem/ShopManagementSystem.Services"
-
-FROM build AS application
-WORKDIR "src/ShopManagementSystem/ShopManagementSystem.UnitTests"
-
 FROM build AS publish
 RUN dotnet publish "ShopManagementSystem.Dashboard.csproj" -c Release -o /app/publish /p:UseAppHost=false
 

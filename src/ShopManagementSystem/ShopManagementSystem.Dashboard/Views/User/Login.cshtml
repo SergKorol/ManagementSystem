@@ -4,28 +4,30 @@
     ViewData["Title"] = "Login Page";
     Layout = "_Layout";
 }
-
-<div class="row row justify-content-center">
-    <div class="col-lg-4 offset-lg-4">
-        @using (Html.BeginForm("Login", "User", FormMethod.Post, new { @class = "form-horizontal" }))
-        {
-            <div class="form-label">
-                <div>
-                    @Html.LabelFor(m => m.Email, new { @class = "form-label" })
-                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", type = "email", pattern = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$" })
-                    @Html.ValidationMessageFor(m => m.Email)
-                </div>
-                <div>
-                    @Html.LabelFor(m => m.Password, new { @class = "form-label" })
-                    @Html.TextBoxFor(m => m.Password, new { @class = "form-control", type = "password" })
-                    @Html.ValidationMessageFor(m => m.Password)
-                </div>
-                <div class="text-center" style="text-align: center">
-                    <div class="btn-group" role="group" aria-label="Login">
-                        <button type="submit" class="btn btn-primary">Login</button>
+<div class="container-fluid text-center">
+    <div class="row justify-content-center">
+        <div class="col-4">
+            @using (Html.BeginForm("Login", "User", FormMethod.Post, new { @class = "form-horizontal" }))
+            {
+                <div class="form-label">
+                    <div>
+                        @Html.LabelFor(m => m.Email, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", type = "email", pattern = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$" })
+                        @Html.ValidationMessageFor(m => m.Email)
+                    </div>
+                    <div>
+                        @Html.LabelFor(m => m.Password, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.Password, new { @class = "form-control", type = "password" })
+                        @Html.ValidationMessageFor(m => m.Password)
+                    </div>
+                    <div class="text-center" style="text-align: center">
+                        <div class="btn-group" role="group" aria-label="Login">
+                            <button type="submit" class="btn btn-primary">Login</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        }
+            }
+        </div>
     </div>
 </div>
+
