@@ -2,7 +2,7 @@
 <RunSettings>
   <RunConfiguration>
     <EnvironmentVariables>
-      <CollectSourceInformation>true</CollectSourceInformation>
+      <CollectSourceInformation>false</CollectSourceInformation>
     </EnvironmentVariables>
   </RunConfiguration>
 </RunSettings>
