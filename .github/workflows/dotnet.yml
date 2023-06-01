@@ -30,4 +30,4 @@ jobs:
     
     - name: Test
       working-directory: src/ShopManagementSystem
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test --no-build --verbosity normal --logger GitHubActions
