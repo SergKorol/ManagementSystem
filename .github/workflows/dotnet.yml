@@ -31,6 +31,7 @@ jobs:
     - name: Test
       working-directory: src/ShopManagementSystem
       run: > 
+        echo "My unit tests:"
         dotnet test 
         --no-build 
         --verbosity normal 
