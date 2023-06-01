@@ -35,5 +35,3 @@ jobs:
         --no-build 
         --verbosity normal 
         --logger "GitHubActions;annotations.titleFormat=$test;annotations.messageFormatError=$error"
-        -- 
-        RunConfiguration.CollectSourceInformation=false
