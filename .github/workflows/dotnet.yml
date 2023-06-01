@@ -30,4 +30,10 @@ jobs:
     
     - name: Test
       working-directory: src/ShopManagementSystem
-      run: dotnet test --no-build --verbosity normal --logger GitHubActions
+      run: > 
+        dotnet test 
+        --no-build 
+        --verbosity normal 
+        --logger GitHubActions
+        -- 
+        RunConfiguration.CollectSourceInformation=true
