@@ -34,6 +34,6 @@ jobs:
         dotnet test 
         --no-build 
         --verbosity normal 
-        --logger GitHubActions
+        --logger "GitHubActions;annotations.titleFormat=$test;annotations.messageFormatError=$error"
         -- 
-        RunConfiguration.EnvironmentVariables.CollectSourceInformation=false
+        RunConfiguration.CollectSourceInformation=false
