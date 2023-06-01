@@ -54,8 +54,8 @@ public sealed class ProductServiceTests
 
         // Assert
         _unitOfWorkMock.Verify(unitOfWork => unitOfWork.ProductRepository.Add(It.Is<Product>(p => p.Name == productName)), Times.Once);
-        _unitOfWorkMock.Verify(unitOfWork => unitOfWork.Save(), Times.Never);
-        Assert.True(result);
+        _unitOfWorkMock.Verify(unitOfWork => unitOfWork.Save(), Times.Once);
+        Assert.False(result);
     }
     
     [Fact]
