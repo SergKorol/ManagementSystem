@@ -72,7 +72,7 @@ public sealed class ShopServiceTests
         var result = await _shopService.EditShop(id, title, phone);
 
         // Assert
-        Assert.False(result);
+        Assert.True(result);
         Assert.Equal(title, shop.Title);
         Assert.Equal(phone, shop.Phone);
         _unitOfWorkMock.Verify(uow => uow.ShopRepository.Update(shop), Times.Once);
