@@ -31,8 +31,7 @@ jobs:
     - name: Test
       working-directory: src/ShopManagementSystem
       run: > 
-        echo "My unit tests: $test" &&
         dotnet test 
         --no-build 
         --verbosity normal 
-        --logger GitHubActions
+        --logger "GitHubActions;annotations.titleFormat=$test;annotations.messageFormat=$error"
