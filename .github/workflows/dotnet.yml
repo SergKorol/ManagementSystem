@@ -34,6 +34,4 @@ jobs:
         dotnet test 
         --no-build 
         --verbosity normal 
-        --logger "GitHubActions;annotations.titleFormat=$test;annotations.messageFormatError=$error"
-        -- 
-        RunConfiguration.CollectSourceInformation=false
+        --logger "GitHubActions;annotations.titleFormat=UserManagementSystem.UnitTests.ProductServiceTests;annotations.messageFormatError=Moq.MockException: fail "
