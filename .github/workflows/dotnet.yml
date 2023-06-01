@@ -36,4 +36,4 @@ jobs:
         --verbosity normal 
         --logger GitHubActions
         -- 
-        RunConfiguration.EnvironmentVariables.CollectSourceInformation=true
+        RunConfiguration.EnvironmentVariables.CollectSourceInformation=false
