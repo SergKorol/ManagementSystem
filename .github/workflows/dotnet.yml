@@ -34,4 +34,4 @@ jobs:
         dotnet test 
         --no-build 
         --verbosity normal 
-        --logger "GitHubActions;annotations.titleFormat=Your UnitTests;annotations.messageFormat=Your test fail"
+        --logger "GitHubActions;annotations.titleFormat=$framework;annotations.messageFormat=Your test fail"
