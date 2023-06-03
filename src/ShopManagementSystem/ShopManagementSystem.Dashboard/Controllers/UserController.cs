@@ -26,7 +26,7 @@ public class UserController : Controller
         var command = new AddGetUsersCommand();
         var users = await _mediator.Send(command);
         List<UserViewModel.UserView> views = null;
-        if (Constrains.ProductIds != null && Constrains.ProductIds.Any())
+        if (Constrains.EmployeeIds != null && Constrains.EmployeeIds.Any())
         {
             users.Where(x => !Constrains.EmployeeIds.Contains(x.Id.ToString()))
                 .Adapt<IEnumerable<UserViewModel.UserView>>();

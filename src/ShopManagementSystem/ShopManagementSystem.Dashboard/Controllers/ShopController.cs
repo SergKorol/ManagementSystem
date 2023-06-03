@@ -22,6 +22,7 @@ public class ShopController : Controller
     
     public async Task<IActionResult> Index()
     {
+        Constrains.ShopId = null;
         var command = new AddGetShopsCommand();
         var result = await _mediator.Send(command);
         var views = result.Adapt<IEnumerable<ShopViewModel.ShopView>>();
@@ -49,6 +50,8 @@ public class ShopController : Controller
         {
             return RedirectToAction("Error", "Home");
         }
+
+        Constrains.ShopId = null;
         return  View("ShopDetail", view);
     }
     
