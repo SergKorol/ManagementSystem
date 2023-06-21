@@ -1,0 +1,68 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+
+jobs:
+- job: Build
+  displayName: 'Build Solution'
+  steps:
+  - task: UseDotNet@2
+    displayName: 'Install .NET SDK'
+    inputs:
+      packageType: 'sdk'
+      version: '7.x'
+      installationPath: '$(Agent.ToolsDirectory)/dotnet'
+
+  - script: dotnet restore
+    displayName: 'Restore NuGet packages'
+    workingDirectory: '$(Build.SourcesDirectory)/src/ShopManagementSystem'
+
+  - script: dotnet build --configuration $(buildConfiguration) --no-restore
+    displayName: 'Build Solution'
+    workingDirectory: '$(Build.SourcesDirectory)/src/ShopManagementSystem'
+
+- job: Test
+  displayName: 'Run Tests'
+  dependsOn: Build
+  steps:
+  - script: dotnet test --configuration $(buildConfiguration) --no-build --collect "Code Coverage"
+    displayName: 'Run Unit Tests'
+    workingDirectory: '$(Build.SourcesDirectory)/src/ShopManagementSystem'
+
+- job: Publish
+  displayName: 'Publish Artifacts'
+  dependsOn: Test
+  steps:
+  - script: dotnet publish --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)
+    displayName: 'Publish Solution'
+    workingDirectory: '$(Build.SourcesDirectory)/src/ShopManagementSystem'
+
+  - task: CmdLine@2
+    displayName: 'Build Docker Image'
+    inputs:
+      script: 'docker-compose -f docker-compose.yml build'
+      workingDirectory: '$(Build.SourcesDirectory)'
+
+  - task: CopyFiles@2
+    displayName: 'Copy Kubernetes Deployment Files'
+    inputs:
+      SourceFolder: '$(Build.SourcesDirectory)/src/ShopManagementSystem/ShopManagementSystem.Dashboard'
+      Contents: '**/k8s.deploy.yaml'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      CleanTargetFolder: true
+      OverWrite: true
+      flattenFolders: true
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifacts'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: 'drop'
+      publishLocation: 'AzureBlob'

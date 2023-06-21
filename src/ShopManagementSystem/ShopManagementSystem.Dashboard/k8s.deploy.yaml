@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shop-system
+  labels:
+    app: shop-system-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: shop-system
+  template:
+    metadata:
+      labels:
+        app: shop-system-app
+        service: shop-system
+    spec:
+      containers:
+        - name: shop-system
+          image: managementsystem-webmvc
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: shop-system
+  labels:
+    app: shop-system-app
+    service: shop-system
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 11000
+      targetPort: 80
+      protocol: TCP
+  selector:
+    service: shop-system
